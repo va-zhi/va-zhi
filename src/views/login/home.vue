@@ -110,7 +110,7 @@ export default {
   .el-aside {
     background-color: #333744;
     .toggle-button {
-      background-color: pink;
+      background-color: rgba(255, 192, 203, 0.342);
       font-size: 10px;
       line-height: 24px;
       color: #fff;
