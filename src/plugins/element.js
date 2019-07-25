@@ -28,10 +28,24 @@ import {
   Cascader,
   Alert,
   Tabs,
-  TabPane
+  TabPane,
+  Steps,
+  Step,
+  Checkbox,
+  CheckboxGroup,
+  Upload,
+  Timeline,
+  TimelineItem
 } from 'element-ui'
 
 Vue.use(Button)
+  .use(Timeline)
+  .use(TimelineItem)
+  .use(Upload)
+  .use(CheckboxGroup)
+  .use(Checkbox)
+  .use(Steps)
+  .use(Step)
   .use(Tabs)
   .use(TabPane)
   .use(Alert)

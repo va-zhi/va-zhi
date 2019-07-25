@@ -30,7 +30,7 @@
             <el-table-column type="expand">
               <template slot-scope="scope">
                 <!-- 循环渲染Tag标签 -->
-                <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable >{{item}}</el-tag>
+                <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable  @close="handleClose(i, scope.row)">{{item}}</el-tag>
                 <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
                 </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag</el-button>
@@ -55,7 +55,7 @@
             <el-table-column type="expand">
               <template slot-scope="scope">
                 <!-- 循环渲染Tag标签 -->
-                <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable >{{item}}</el-tag>
+                <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable @close="handleClose(i, scope.row)">{{item}}</el-tag>
                 <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
                 </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag</el-button>
@@ -291,6 +291,32 @@ export default {
     handleClose (i, row) {
       row.attr_vals.splice(i, 1)
       this.saveAttrVals(row)
+    },
+    async removeParams (attr_id) {
+      try {
+        await this.$confirm(
+          '此操作将永久删除该参数, 是否继续?',
+          '提示',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }
+        )
+        // 删除的业务逻辑
+        const { data: res } = await this.$http.delete(
+          `categories/${this.cateId}/attributes/${attr_id}`
+        )
+
+        if (res.meta.status !== 200) {
+          return this.$message.error('删除参数失败！')
+        }
+
+        this.$message.success('删除参数成功！')
+        this.getParamsData()
+      } catch {
+        return this.$message.info('已取消删除！')
+      }
     }
   },
   computed: {
